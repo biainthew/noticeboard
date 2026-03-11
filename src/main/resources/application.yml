@@ -7,7 +7,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
@@ -23,9 +23,9 @@ server:
 
 springdoc:
   swagger-ui:
-    path: /swagger-ui.html
+    path: /swagger-ui
 
 jwt:
   secret: noticeboardsecretkey12345678901234567890
-  access-token-expiration: 1800000      # 30?
-  refresh-token-expiration: 604800000   # 7?
+  access-token-expiration: 1800000      # 30분
+  refresh-token-expiration: 604800000   # 7일
