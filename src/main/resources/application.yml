@@ -24,3 +24,8 @@ server:
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
+
+jwt:
+  secret: noticeboardsecretkey12345678901234567890
+  access-token-expiration: 1800000      # 30?
+  refresh-token-expiration: 604800000   # 7?
