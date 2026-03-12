@@ -3,10 +3,12 @@ package aib.noticeboard.dto.request;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import lombok.Setter;
 
 public class PostRequestDto {
 
     @Getter
+    @Setter
     public static class Create {
         @NotBlank(message = "제목을 입력해 주세요.")
         @Size(max = 100, message = "제목은 100자 이하여야 합니다.")
@@ -17,6 +19,7 @@ public class PostRequestDto {
     }
 
     @Getter
+    @Setter
     public static class Update {
         @NotBlank(message = "제목을 입력해 주세요.")
         @Size(max = 100, message = "제목은 100자 이하여야 합니다.")

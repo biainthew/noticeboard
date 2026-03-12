@@ -1,6 +1,7 @@
 package aib.noticeboard.dto.response;
 
 import aib.noticeboard.domain.entity.Post;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -57,6 +58,21 @@ public class PostResponseDto {
             this.likeCount = post.getLikeCount();
             this.createdAt = post.getCreatedAt();
             this.updatedAt = post.getUpdatedAt();
+        }
+
+        // 테스트 코드용 생성자
+        @Builder
+        public Detail(Long id, String title, String content, String nickname,
+                      int viewCount, int likeCount,
+                      LocalDateTime createdAt, LocalDateTime updatedAt) {
+            this.id = id;
+            this.title = title;
+            this.content = content;
+            this.nickname = nickname;
+            this.viewCount = viewCount;
+            this.likeCount = likeCount;
+            this.createdAt = createdAt;
+            this.updatedAt = updatedAt;
         }
     }
 }
