@@ -47,5 +47,16 @@ public class PostResponseDto {
             this.createdAt = post.getCreatedAt();
             this.updatedAt = post.getUpdatedAt();
         }
+
+        public Detail(Post post, int viewCount) {
+            this.id = post.getId();
+            this.title = post.getTitle();
+            this.content = post.getContent();
+            this.nickname = post.getMember().getNickname();
+            this.viewCount = viewCount;
+            this.likeCount = post.getLikeCount();
+            this.createdAt = post.getCreatedAt();
+            this.updatedAt = post.getUpdatedAt();
+        }
     }
 }

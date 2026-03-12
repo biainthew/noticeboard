@@ -21,6 +21,7 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
+    private final ViewCountService viewCountService;
 
     @Transactional
     public PostResponseDto.Detail create (String email, PostRequestDto.Create request) {
@@ -48,9 +49,11 @@ public class PostService {
         Post post = postRepository.findByIdAndStatus(postId, PostStatus.ACTIVE)
                 .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
 
-        post.increaseViewCount();
+        viewCountService.increaseViewCount(postId);
 
-        return new PostResponseDto.Detail(post);
+        int redisViewCount = post.getViewCount() + viewCountService.getViewCount(postId);
+
+        return new PostResponseDto.Detail(post, redisViewCount);
     }
 
     @Transactional
