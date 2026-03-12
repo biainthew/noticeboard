@@ -1,5 +1,7 @@
-package aib.noticeboard.security;
+package aib.noticeboard.config;
 
+import aib.noticeboard.security.JwtAuthenticationFilter;
+import aib.noticeboard.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
