@@ -1,12 +1,11 @@
 package aib.noticeboard.controller;
 
+import aib.noticeboard.config.SecurityConfig;
 import aib.noticeboard.dto.request.PostRequestDto;
 import aib.noticeboard.dto.response.PostResponseDto;
 import aib.noticeboard.exception.CustomException;
 import aib.noticeboard.exception.ErrorCode;
-import aib.noticeboard.exception.GlobalExceptionHandler;
 import aib.noticeboard.security.JwtTokenProvider;
-import aib.noticeboard.config.SecurityConfig;
 import aib.noticeboard.service.PostService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -26,7 +25,6 @@ import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -36,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @WebMvcTest(controllers = PostController.class)
-@Import({SecurityConfig.class, GlobalExceptionHandler.class})
+@Import(SecurityConfig.class)
 public class PostControllerTest {
 
     @Autowired
