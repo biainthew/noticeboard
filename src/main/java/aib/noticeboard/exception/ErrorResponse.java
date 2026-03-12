@@ -1,7 +1,10 @@
 package aib.noticeboard.exception;
 
+import lombok.Getter;
+
 import java.util.Map;
 
+@Getter
 public class ErrorResponse {
     private final String message;
     private final int status;
