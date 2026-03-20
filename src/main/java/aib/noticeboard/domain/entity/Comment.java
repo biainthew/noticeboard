@@ -7,6 +7,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -35,6 +38,9 @@ public class Comment extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private CommentStatus status;
+
+    @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY)
+    private List<Comment> children = new ArrayList<>();
 
     @Builder
     public Comment(Member member, Post post, Comment parent, String content, CommentStatus status) {
