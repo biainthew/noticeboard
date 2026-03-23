@@ -4,6 +4,7 @@ import aib.noticeboard.domain.entity.Comment;
 import aib.noticeboard.domain.entity.Member;
 import aib.noticeboard.domain.entity.Post;
 import aib.noticeboard.domain.enums.CommentStatus;
+import aib.noticeboard.domain.enums.NotificationType;
 import aib.noticeboard.domain.enums.PostStatus;
 import aib.noticeboard.dto.request.CommentRequestDto;
 import aib.noticeboard.dto.response.CommentResponseDto;
@@ -25,6 +26,7 @@ public class CommentService {
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
+    private final NotificationService notificationService;
 
     @Transactional
     public CommentResponseDto.Detail create(String email, Long postId, CommentRequestDto.Create request) {
@@ -48,7 +50,12 @@ public class CommentService {
                 .status(CommentStatus.ACTIVE)
                 .build();
 
-        return new CommentResponseDto.Detail(commentRepository.save(comment));
+        Comment saved = commentRepository.save(comment);
+
+        // 게시글 작성자에게 알림 전송
+        notificationService.send(post.getMember(), member, post, NotificationType.COMMENT);
+
+        return new CommentResponseDto.Detail(saved);
     }
 
     @Transactional(readOnly = true)
