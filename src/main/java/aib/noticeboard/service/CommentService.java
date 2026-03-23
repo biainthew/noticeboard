@@ -22,9 +22,9 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class CommentService {
-    MemberRepository memberRepository;
-    PostRepository postRepository;
-    CommentRepository commentRepository;
+    private final MemberRepository memberRepository;
+    private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
 
     @Transactional
     public CommentResponseDto.Detail create(String email, Long postId, CommentRequestDto.Create request) {

@@ -39,7 +39,7 @@ public class CommentController {
         return ResponseEntity.ok(commentService.update(email, commentId, request));
     }
 
-    @DeleteMapping("/commentId")
+    @DeleteMapping("/{commentId}")
     public ResponseEntity<Void> delete(@AuthenticationPrincipal String email,
                                        @PathVariable Long postId,
                                        @PathVariable Long commentId) {

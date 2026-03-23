@@ -29,3 +29,7 @@ jwt:
   secret: noticeboardsecretkey12345678901234567890
   access-token-expiration: 1800000      # 30분
   refresh-token-expiration: 604800000   # 7일
+
+logging:
+  level:
+    aib.noticeboard: DEBUG
