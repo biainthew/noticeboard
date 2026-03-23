@@ -17,7 +17,6 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -58,7 +57,8 @@ public class NotificationService {
     @Transactional
     public void send(Member receiver, Member sender, Post post, NotificationType type) {
         // 자기 자신에게는 알림 전송 안 함
-        if (Objects.equals(receiver.getId(), sender.getId())) return;
+        // if (Objects.equals(receiver.getId(), sender.getId())) return;
+        if (receiver.getEmail().equals(sender.getEmail())) return;
 
         Notification notification = Notification.builder()
                 .receiver(receiver)
