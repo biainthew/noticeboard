@@ -44,6 +44,9 @@ public class CommentServiceTest {
     @Mock
     private PostRepository postRepository;
 
+    @Mock
+    private NotificationService notificationService;
+
     private Member member;
     private Post post;
     private Comment comment;
