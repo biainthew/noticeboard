@@ -33,8 +33,10 @@ public class PostResponseDto {
         private final String title;
         private final String content;
         private final String nickname;
+        private final String email;
         private final int viewCount;
         private final int likeCount;
+        private final boolean liked;
         private final LocalDateTime createdAt;
         private final LocalDateTime updatedAt;
 
@@ -43,19 +45,23 @@ public class PostResponseDto {
             this.title = post.getTitle();
             this.content = post.getContent();
             this.nickname = post.getMember().getNickname();
+            this.email = post.getMember().getEmail();
             this.viewCount = post.getViewCount();
             this.likeCount = post.getLikeCount();
+            this.liked = false;
             this.createdAt = post.getCreatedAt();
             this.updatedAt = post.getUpdatedAt();
         }
 
-        public Detail(Post post, int viewCount) {
+        public Detail(Post post, int viewCount, boolean liked) {
             this.id = post.getId();
             this.title = post.getTitle();
             this.content = post.getContent();
             this.nickname = post.getMember().getNickname();
+            this.email = post.getMember().getEmail();
             this.viewCount = viewCount;
             this.likeCount = post.getLikeCount();
+            this.liked = liked;
             this.createdAt = post.getCreatedAt();
             this.updatedAt = post.getUpdatedAt();
         }
@@ -63,14 +69,16 @@ public class PostResponseDto {
         // 테스트 코드용 생성자
         @Builder
         public Detail(Long id, String title, String content, String nickname,
-                      int viewCount, int likeCount,
+                      int viewCount, int likeCount, boolean liked,
                       LocalDateTime createdAt, LocalDateTime updatedAt) {
             this.id = id;
             this.title = title;
             this.content = content;
             this.nickname = nickname;
+            this.email = "test@test.com";
             this.viewCount = viewCount;
             this.likeCount = likeCount;
+            this.liked = liked;
             this.createdAt = createdAt;
             this.updatedAt = updatedAt;
         }

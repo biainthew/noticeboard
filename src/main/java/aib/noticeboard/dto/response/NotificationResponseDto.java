@@ -13,6 +13,7 @@ public class NotificationResponseDto {
         private final String senderNickname;
         private final String type;
         private final Long postId;
+        private final String postTitle;
         private final boolean isRead;
         private final LocalDateTime createdAt;
 
@@ -21,6 +22,7 @@ public class NotificationResponseDto {
             this.senderNickname = notification.getSender().getNickname();
             this.type = notification.getType().name();
             this.postId = notification.getPost().getId();
+            this.postTitle = notification.getPost().getTitle();
             this.isRead = notification.isRead();
             this.createdAt = notification.getCreatedAt();
         }

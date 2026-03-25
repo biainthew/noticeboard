@@ -14,6 +14,7 @@ public class CommentResponseDto {
         private final Long id;
         private final String content;
         private final String nickname;
+        private final String email;
         private final Long parentId;
         private final List<Detail> children;
         private final LocalDateTime createdAt;
@@ -23,6 +24,7 @@ public class CommentResponseDto {
             this.id = comment.getId();
             this.content = comment.getContent();
             this.nickname = comment.getMember().getNickname();
+            this.email = comment.getMember().getEmail();
             this.parentId = comment.getParent() != null ? comment.getParent().getId() : null;
             this.children = comment.getChildren() != null
                     ? comment.getChildren().stream()

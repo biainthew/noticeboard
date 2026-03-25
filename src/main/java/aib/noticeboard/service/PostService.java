@@ -7,6 +7,7 @@ import aib.noticeboard.dto.request.PostRequestDto;
 import aib.noticeboard.dto.response.PostResponseDto;
 import aib.noticeboard.exception.CustomException;
 import aib.noticeboard.exception.ErrorCode;
+import aib.noticeboard.repository.LikeRepository;
 import aib.noticeboard.repository.MemberRepository;
 import aib.noticeboard.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
     private final ViewCountService viewCountService;
+    private final LikeRepository likeRepository;
 
     @Transactional
     public PostResponseDto.Detail create (String email, PostRequestDto.Create request) {
@@ -45,7 +47,7 @@ public class PostService {
     }
 
     @Transactional
-    public PostResponseDto.Detail getDetail (Long postId) {
+    public PostResponseDto.Detail getDetail (Long postId, String email) {
         Post post = postRepository.findByIdAndStatus(postId, PostStatus.ACTIVE)
                 .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
 
@@ -53,7 +55,16 @@ public class PostService {
 
         int redisViewCount = post.getViewCount() + viewCountService.getViewCount(postId);
 
-        return new PostResponseDto.Detail(post, redisViewCount);
+        boolean liked = false;
+        if (email != null) {
+            Member member = memberRepository.findByEmail(email)
+                    .orElse(null);
+            if (member != null) {
+                liked = likeRepository.existsByMemberAndPost(member, post);
+            }
+        }
+
+        return new PostResponseDto.Detail(post, redisViewCount, liked);
     }
 
     @Transactional

@@ -109,7 +109,7 @@ public class PostControllerTest {
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build();
-        given(postService.getDetail(1L)).willReturn(response);
+        given(postService.getDetail(1L, "lba0507@gmail.com")).willReturn(response);
 
         // when & then
         mockMvc.perform(get("/api/posts/1"))

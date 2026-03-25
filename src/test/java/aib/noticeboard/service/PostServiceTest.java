@@ -103,7 +103,7 @@ public class PostServiceTest {
         given(viewCountService.getViewCount(1L)).willReturn(0);
 
         // when
-        PostResponseDto.Detail result = postService.getDetail(1L);
+        PostResponseDto.Detail result = postService.getDetail(1L, "lba0507@gmail.com");
 
         // then
         assertThat(result.getTitle()).isEqualTo(post.getTitle());
@@ -117,7 +117,7 @@ public class PostServiceTest {
         given(postRepository.findByIdAndStatus(any(), any())).willReturn(Optional.empty());
 
         // when & then
-        assertThatThrownBy(() -> postService.getDetail(999L))
+        assertThatThrownBy(() -> postService.getDetail(999L, ""))
                 .isInstanceOf(CustomException.class)
                 .hasMessageContaining(ErrorCode.POST_NOT_FOUND.getMessage());
     }
