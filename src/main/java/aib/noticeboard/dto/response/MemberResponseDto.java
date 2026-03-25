@@ -28,4 +28,13 @@ public class MemberResponseDto {
             this.refreshToken = refreshToken;
         }
     }
+
+    @Getter
+    public static class AccessToken {
+        private final String accessToken;
+
+        public AccessToken(String accessToken) {
+            this.accessToken = accessToken;
+        }
+    }
 }

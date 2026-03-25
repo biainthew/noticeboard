@@ -28,4 +28,10 @@ public class AuthController {
     public ResponseEntity<MemberResponseDto.Token> login(@Valid @RequestBody MemberRequestDto.Login request) {
         return ResponseEntity.ok(memberService.login(request));
     }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<MemberResponseDto.AccessToken> refresh(
+            @Valid @RequestBody MemberRequestDto.Refresh request) {
+        return ResponseEntity.ok(memberService.refresh(request.getRefreshToken()));
+    }
 }

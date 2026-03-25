@@ -20,6 +20,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
+    private final RefreshTokenService refreshTokenService;
 
     @Transactional
     public MemberResponseDto.Info signUp (MemberRequestDto.SignUp request) {
@@ -51,6 +52,26 @@ public class MemberService {
         String accessToken = jwtTokenProvider.createAccessToken(member.getEmail(), member.getRole().name());
         String refreshToken  = jwtTokenProvider.createRefreshToken(member.getEmail(), member.getRole().name());
 
+        // Refresh Token Redis에 저장
+        refreshTokenService.save(member.getEmail(), refreshToken);
+
         return new MemberResponseDto.Token(accessToken, refreshToken);
+    }
+
+    public MemberResponseDto.AccessToken refresh(String refreshToken) {
+        if (!jwtTokenProvider.validateToken(refreshToken)) {
+            throw new CustomException(ErrorCode.INVALID_TOKEN);
+        }
+
+        String email = jwtTokenProvider.getEmail(refreshToken);
+        String role = jwtTokenProvider.getRole(refreshToken);
+
+        if (!refreshTokenService.isValid(email, refreshToken)) {
+            throw new CustomException(ErrorCode.INVALID_TOKEN);
+        }
+
+        String newAccessToken = jwtTokenProvider.createAccessToken(email, role);
+
+        return new MemberResponseDto.AccessToken(newAccessToken);
     }
 }

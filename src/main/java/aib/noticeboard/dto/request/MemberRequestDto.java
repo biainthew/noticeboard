@@ -31,4 +31,10 @@ public class MemberRequestDto {
         @NotBlank(message = "비밀번호를 입력해 주세요.")
         private String password;
     }
+
+    @Getter
+    public static class Refresh {
+        @NotBlank
+        private String refreshToken;
+    }
 }
