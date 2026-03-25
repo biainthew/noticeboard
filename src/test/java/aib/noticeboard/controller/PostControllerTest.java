@@ -87,7 +87,7 @@ public class PostControllerTest {
     @WithMockUser
     void getList_success() throws Exception {
         // given
-        given(postService.getList(any(Pageable.class))).willReturn(new PageImpl<>(List.of()));
+        given(postService.getList(any(Pageable.class), "lba0507@gmail.com")).willReturn(new PageImpl<>(List.of()));
 
         // when & then
         mockMvc.perform(get("/api/posts"))

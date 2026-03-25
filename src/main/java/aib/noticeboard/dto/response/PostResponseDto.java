@@ -9,21 +9,26 @@ import java.time.LocalDateTime;
 public class PostResponseDto {
 
     @Getter
+    @Builder
     public static class Summary {
         private final Long id;
         private final String title;
         private final String nickname;
         private final int viewCount;
         private final int likeCount;
+        private final boolean liked;
         private final LocalDateTime createdAt;
 
-        public Summary(Post post) {
-            this.id = post.getId();
-            this.title = post.getTitle();
-            this.nickname = post.getMember().getNickname();
-            this.viewCount = post.getViewCount();
-            this.likeCount = post.getLikeCount();
-            this.createdAt = post.getCreatedAt();
+        public static Summary from(Post post, boolean liked) {
+            return Summary.builder()
+                    .id(post.getId())
+                    .title(post.getTitle())
+                    .nickname(post.getMember().getNickname())
+                    .viewCount(post.getViewCount())
+                    .likeCount(post.getLikeCount())
+                    .liked(liked)
+                    .createdAt(post.getCreatedAt())
+                    .build();
         }
     }
 

@@ -1,6 +1,7 @@
 package aib.noticeboard.dto.response;
 
 import aib.noticeboard.domain.entity.Comment;
+import aib.noticeboard.domain.enums.CommentStatus;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -28,6 +29,7 @@ public class CommentResponseDto {
             this.parentId = comment.getParent() != null ? comment.getParent().getId() : null;
             this.children = comment.getChildren() != null
                     ? comment.getChildren().stream()
+                    .filter(child -> child.getStatus() == CommentStatus.ACTIVE)
                     .map(Detail::new)
                     .collect(Collectors.toList())
                     : List.of();

@@ -41,9 +41,15 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public Page<PostResponseDto.Summary> getList (Pageable pageable) {
-        return postRepository.findAllByStatus(PostStatus.ACTIVE, pageable)
-                .map(PostResponseDto.Summary::new);
+    public Page<PostResponseDto.Summary> getList(Pageable pageable, String email) {
+        Page<Post> posts = postRepository.findAllByStatus(PostStatus.ACTIVE, pageable);
+
+        Member member = (email != null) ? memberRepository.findByEmail(email).orElse(null) : null;
+
+        return posts.map(post -> {
+            boolean liked = member != null && likeRepository.existsByMemberAndPost(member, post);
+            return PostResponseDto.Summary.from(post, liked);
+        });
     }
 
     @Transactional

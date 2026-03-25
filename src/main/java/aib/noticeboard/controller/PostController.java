@@ -30,8 +30,9 @@ public class PostController {
 
     @GetMapping
     public ResponseEntity<Page<PostResponseDto.Summary>> getList(
-            @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
-        return ResponseEntity.ok(postService.getList(pageable));
+            @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
+            @AuthenticationPrincipal String email) {
+        return ResponseEntity.ok(postService.getList(pageable, email));
     }
 
     @GetMapping("/{postId}")
