@@ -3,6 +3,7 @@ package aib.noticeboard.service;
 import aib.noticeboard.domain.entity.Like;
 import aib.noticeboard.domain.entity.Member;
 import aib.noticeboard.domain.entity.Post;
+import aib.noticeboard.domain.enums.NotificationType;
 import aib.noticeboard.domain.enums.PostStatus;
 import aib.noticeboard.exception.CustomException;
 import aib.noticeboard.exception.ErrorCode;
@@ -20,6 +21,7 @@ public class LikeService {
     private final LikeRepository likeRepository;
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
+    private final NotificationService notificationService;
 
     @Transactional
     public void like(String email, Long postId) {
@@ -39,6 +41,9 @@ public class LikeService {
                 .build());
 
         post.increaseLikeCount();
+
+        // 게시글 작성자에게 알림 전송
+        notificationService.send(post.getMember(), member, post, NotificationType.LIKE);
     }
 
     @Transactional
