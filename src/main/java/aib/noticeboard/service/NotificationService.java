@@ -31,16 +31,16 @@ public class NotificationService {
     private final Map<Long, SseEmitter> emitters = new ConcurrentHashMap<>();
 
     public SseEmitter subscribe(String email) {
-        Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+        // DB 조회를 별도 트랜잭션으로 분리해서 커넥션 즉시 반환
+        Long memberId = getMemberId(email);
 
         SseEmitter emitter = new SseEmitter(60 * 60 * 1000L); // 1시간 타임아웃
 
-        emitters.put(member.getId(), emitter);
+        emitters.put(memberId, emitter);
 
-        emitter.onCompletion(() -> emitters.remove(member.getId()));
-        emitter.onTimeout(() -> emitters.remove(member.getId()));
-        emitter.onError(e -> emitters.remove(member.getId()));
+        emitter.onCompletion(() -> emitters.remove(memberId));
+        emitter.onTimeout(() -> emitters.remove(memberId));
+        emitter.onError(e -> emitters.remove(memberId));
 
         // 연결 직후 더미 이벤트 전송(연결 유지용)
         try {
@@ -48,10 +48,17 @@ public class NotificationService {
                     .name("connect")
                     .data("connected"));
         } catch (IOException e) {
-            emitters.remove(member.getId());
+            emitters.remove(memberId);
         }
 
         return emitter;
+    }
+
+    @Transactional(readOnly = true)
+    public Long getMemberId(String email) {
+        return memberRepository.findByEmail(email)
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND))
+                .getId();
     }
 
     @Transactional
