@@ -226,3 +226,14 @@ mysql -u root -p -e "CREATE DATABASE noticeboard;"
 
 - `http://localhost:5173` (개발)
 - `https://communeio.site` (프로덕션)
+
+## 프론트엔드
+
+- GitHub: https://github.com/biainthew/noticeboard-frontend
+
+## 테스트 계정
+
+| 이메일 | 비밀번호 |
+|--------|----------|
+| user1@test.com | user1234 |
+| user2@test.com | user1234 |
