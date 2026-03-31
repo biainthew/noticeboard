@@ -29,6 +29,10 @@ public class Notification extends BaseEntity {
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "comment_id")
+    private Comment comment;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private NotificationType type;
@@ -37,10 +41,11 @@ public class Notification extends BaseEntity {
     private boolean isRead = false;
 
     @Builder
-    public Notification(Member receiver, Member sender, Post post, NotificationType type) {
+    public Notification(Member receiver, Member sender, Post post, Comment comment, NotificationType type) {
         this.receiver = receiver;
         this.sender = sender;
         this.post = post;
+        this.comment = comment;
         this.type = type;
     }
 

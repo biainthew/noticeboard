@@ -43,7 +43,7 @@ public class LikeService {
         post.increaseLikeCount();
 
         // 게시글 작성자에게 알림 전송
-        notificationService.send(post.getMember(), member, post, NotificationType.LIKE);
+        notificationService.send(post.getMember(), member, post, null, NotificationType.LIKE);
     }
 
     @Transactional

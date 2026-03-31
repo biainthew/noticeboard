@@ -14,6 +14,7 @@ public class NotificationResponseDto {
         private final String type;
         private final Long postId;
         private final String postTitle;
+        private final String commentContent;
         private final boolean isRead;
         private final LocalDateTime createdAt;
 
@@ -23,6 +24,9 @@ public class NotificationResponseDto {
             this.type = notification.getType().name();
             this.postId = notification.getPost().getId();
             this.postTitle = notification.getPost().getTitle();
+            this.commentContent = notification.getComment() != null
+                    ? notification.getComment().getContent()
+                    : null;
             this.isRead = notification.isRead();
             this.createdAt = notification.getCreatedAt();
         }

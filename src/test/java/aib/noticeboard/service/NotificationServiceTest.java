@@ -73,7 +73,7 @@ public class NotificationServiceTest {
     @DisplayName("알림 전송 성공")
     void send_success() {
         // when
-        notificationService.send(receiver, sender, post, NotificationType.COMMENT);
+        notificationService.send(receiver, sender, post, null, NotificationType.COMMENT);
 
         // then
         verify(notificationRepository).save(any(Notification.class));
@@ -83,7 +83,7 @@ public class NotificationServiceTest {
     @DisplayName("알림 전송 실패 - 자기 자신에게는 알림 전송 안 함")
     void send_skip_self() {
         // when
-        notificationService.send(receiver, receiver, post, NotificationType.COMMENT);
+        notificationService.send(receiver, receiver, post, null, NotificationType.COMMENT);
 
         // then
         verify(notificationRepository, never()).save(any(Notification.class));

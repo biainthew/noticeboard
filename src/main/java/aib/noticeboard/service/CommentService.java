@@ -53,7 +53,7 @@ public class CommentService {
         Comment saved = commentRepository.save(comment);
 
         // 게시글 작성자에게 알림 전송
-        notificationService.send(post.getMember(), member, post, NotificationType.COMMENT);
+        notificationService.send(post.getMember(), member, post, comment, NotificationType.COMMENT);
 
         return new CommentResponseDto.Detail(saved);
     }
