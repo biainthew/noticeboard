@@ -30,6 +30,8 @@ jobs:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
           AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
+          MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
+          MAIL_APP_PASSWORD: ${{ secrets.MAIL_APP_PASSWORD }}
 
       - name: EC2에 jar 파일 전송
         uses: appleboy/scp-action@v0.1.7
@@ -57,4 +59,6 @@ jobs:
               -DJWT_SECRET="${{ secrets.JWT_SECRET }}" \
               -DAWS_ACCESS_KEY="${{ secrets.AWS_ACCESS_KEY }}" \
               -DAWS_SECRET_KEY="${{ secrets.AWS_SECRET_KEY }}" \
+              -DMAIL_USERNAME="${{ secrets.MAIL_USERNAME }}" \
+              -DMAIL_APP_PASSWORD="${{ secrets.MAIL_APP_PASSWORD }}" \
               $(ls *.jar | grep -v plain) > /home/ubuntu/app/app.log 2>&1 &
