@@ -9,4 +9,6 @@ import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findAllByPostAndStatusAndParentIsNull(Post post, CommentStatus status);
+
+    long countByPostAndStatusAndParentIsNull(Post post, CommentStatus status);
 }

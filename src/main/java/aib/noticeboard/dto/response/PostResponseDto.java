@@ -16,16 +16,18 @@ public class PostResponseDto {
         private final String nickname;
         private final int viewCount;
         private final int likeCount;
+        private final int commentCount;
         private final boolean liked;
         private final LocalDateTime createdAt;
 
-        public static Summary from(Post post, boolean liked) {
+        public static Summary from(Post post, boolean liked, int commentCount) {
             return Summary.builder()
                     .id(post.getId())
                     .title(post.getTitle())
                     .nickname(post.getMember().getNickname())
                     .viewCount(post.getViewCount())
                     .likeCount(post.getLikeCount())
+                    .commentCount(commentCount)
                     .liked(liked)
                     .createdAt(post.getCreatedAt())
                     .build();
@@ -41,11 +43,12 @@ public class PostResponseDto {
         private final String email;
         private final int viewCount;
         private final int likeCount;
+        private final int commentCount;
         private final boolean liked;
         private final LocalDateTime createdAt;
         private final LocalDateTime updatedAt;
 
-        public Detail(Post post) {
+        public Detail(Post post, int commentCount) {
             this.id = post.getId();
             this.title = post.getTitle();
             this.content = post.getContent();
@@ -53,12 +56,13 @@ public class PostResponseDto {
             this.email = post.getMember().getEmail();
             this.viewCount = post.getViewCount();
             this.likeCount = post.getLikeCount();
+            this.commentCount = commentCount;
             this.liked = false;
             this.createdAt = post.getCreatedAt();
             this.updatedAt = post.getUpdatedAt();
         }
 
-        public Detail(Post post, int viewCount, boolean liked) {
+        public Detail(Post post, int viewCount, boolean liked, int commentCount) {
             this.id = post.getId();
             this.title = post.getTitle();
             this.content = post.getContent();
@@ -66,6 +70,7 @@ public class PostResponseDto {
             this.email = post.getMember().getEmail();
             this.viewCount = viewCount;
             this.likeCount = post.getLikeCount();
+            this.commentCount = commentCount;
             this.liked = liked;
             this.createdAt = post.getCreatedAt();
             this.updatedAt = post.getUpdatedAt();
@@ -74,7 +79,7 @@ public class PostResponseDto {
         // 테스트 코드용 생성자
         @Builder
         public Detail(Long id, String title, String content, String nickname,
-                      int viewCount, int likeCount, boolean liked,
+                      int viewCount, int likeCount, int commentCount, boolean liked,
                       LocalDateTime createdAt, LocalDateTime updatedAt) {
             this.id = id;
             this.title = title;
@@ -83,6 +88,7 @@ public class PostResponseDto {
             this.email = "test@test.com";
             this.viewCount = viewCount;
             this.likeCount = likeCount;
+            this.commentCount = commentCount;
             this.liked = liked;
             this.createdAt = createdAt;
             this.updatedAt = updatedAt;

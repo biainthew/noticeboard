@@ -6,8 +6,10 @@ import aib.noticeboard.domain.enums.MemberRole;
 import aib.noticeboard.domain.enums.PostStatus;
 import aib.noticeboard.dto.request.PostRequestDto;
 import aib.noticeboard.dto.response.PostResponseDto;
+import aib.noticeboard.domain.enums.CommentStatus;
 import aib.noticeboard.exception.CustomException;
 import aib.noticeboard.exception.ErrorCode;
+import aib.noticeboard.repository.CommentRepository;
 import aib.noticeboard.repository.MemberRepository;
 import aib.noticeboard.repository.PostRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,6 +42,9 @@ public class PostServiceTest {
 
     @Mock
     private ViewCountService viewCountService;
+
+    @Mock
+    private CommentRepository commentRepository;
 
     private Member member;
     private Post post;
@@ -101,6 +106,7 @@ public class PostServiceTest {
         // given
         given(postRepository.findByIdAndStatus(1L, PostStatus.ACTIVE)).willReturn(Optional.of(post));
         given(viewCountService.getViewCount(1L)).willReturn(0);
+        given(commentRepository.countByPostAndStatusAndParentIsNull(post, CommentStatus.ACTIVE)).willReturn(0L);
 
         // when
         PostResponseDto.Detail result = postService.getDetail(1L, "lba0507@gmail.com");
@@ -130,6 +136,7 @@ public class PostServiceTest {
         request.setTitle("테스트 제목 수정");
         request.setContent("테스트 내용 수정");
         given(postRepository.findByIdAndStatus(1L, PostStatus.ACTIVE)).willReturn(Optional.of(post));
+        given(commentRepository.countByPostAndStatusAndParentIsNull(post, CommentStatus.ACTIVE)).willReturn(0L);
 
         // when
         PostResponseDto.Detail result = postService.update(member.getEmail(), 1L, request);

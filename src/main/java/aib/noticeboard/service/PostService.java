@@ -2,11 +2,13 @@ package aib.noticeboard.service;
 
 import aib.noticeboard.domain.entity.Member;
 import aib.noticeboard.domain.entity.Post;
+import aib.noticeboard.domain.enums.CommentStatus;
 import aib.noticeboard.domain.enums.PostStatus;
 import aib.noticeboard.dto.request.PostRequestDto;
 import aib.noticeboard.dto.response.PostResponseDto;
 import aib.noticeboard.exception.CustomException;
 import aib.noticeboard.exception.ErrorCode;
+import aib.noticeboard.repository.CommentRepository;
 import aib.noticeboard.repository.LikeRepository;
 import aib.noticeboard.repository.MemberRepository;
 import aib.noticeboard.repository.PostRepository;
@@ -24,6 +26,7 @@ public class PostService {
     private final MemberRepository memberRepository;
     private final ViewCountService viewCountService;
     private final LikeRepository likeRepository;
+    private final CommentRepository commentRepository;
 
     @Transactional
     public PostResponseDto.Detail create (String email, PostRequestDto.Create request) {
@@ -37,7 +40,7 @@ public class PostService {
                 .status(PostStatus.ACTIVE)
                 .build();
 
-        return new PostResponseDto.Detail(postRepository.save(post));
+        return new PostResponseDto.Detail(postRepository.save(post), 0);
     }
 
     @Transactional(readOnly = true)
@@ -48,7 +51,8 @@ public class PostService {
 
         return posts.map(post -> {
             boolean liked = member != null && likeRepository.existsByMemberAndPost(member, post);
-            return PostResponseDto.Summary.from(post, liked);
+            int commentCount = (int) commentRepository.countByPostAndStatusAndParentIsNull(post, CommentStatus.ACTIVE);
+            return PostResponseDto.Summary.from(post, liked, commentCount);
         });
     }
 
@@ -70,7 +74,9 @@ public class PostService {
             }
         }
 
-        return new PostResponseDto.Detail(post, redisViewCount, liked);
+        int commentCount = (int) commentRepository.countByPostAndStatusAndParentIsNull(post, CommentStatus.ACTIVE);
+
+        return new PostResponseDto.Detail(post, redisViewCount, liked, commentCount);
     }
 
     @Transactional
@@ -84,7 +90,9 @@ public class PostService {
 
         post.update(request.getTitle(), request.getContent());
 
-        return new PostResponseDto.Detail(post);
+        int commentCount = (int) commentRepository.countByPostAndStatusAndParentIsNull(post, CommentStatus.ACTIVE);
+
+        return new PostResponseDto.Detail(post, commentCount);
     }
 
     @Transactional
