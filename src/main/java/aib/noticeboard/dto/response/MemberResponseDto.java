@@ -37,4 +37,13 @@ public class MemberResponseDto {
             this.accessToken = accessToken;
         }
     }
+
+    @Getter
+    public static class Message {
+        private final String message;
+
+        public Message(String message) {
+            this.message = message;
+        }
+    }
 }

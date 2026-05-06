@@ -37,4 +37,21 @@ public class MemberRequestDto {
         @NotBlank
         private String refreshToken;
     }
+
+    @Getter
+    public static class ForgotPassword {
+        @NotBlank(message = "이메일을 입력해 주세요.")
+        @Email(message = "이메일 형식이 올바르지 않습니다.")
+        private String email;
+    }
+
+    @Getter
+    public static class ResetPassword {
+        @NotBlank(message = "토큰이 필요합니다.")
+        private String token;
+
+        @NotBlank(message = "비밀번호를 입력해 주세요.")
+        @Size(min = 8, message = "비밀번호는 8자 이상이어야 합니다.")
+        private String newPassword;
+    }
 }
